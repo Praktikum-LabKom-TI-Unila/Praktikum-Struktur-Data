@@ -3,85 +3,89 @@ using namespace std;
 
 const int SIZE = 10;
 
-struct Node {
+enum SlotState { EMPTY, OCCUPIED, DELETED };
+
+struct Entry {
     int key;
     int value;
-    Node* next;
+    SlotState state;
 };
 
-void initTable(Node* table[]) {
-    for (int i = 0; i < SIZE; i++) {
-        table[i] = nullptr;
+int hashFunction(int key) { return (key % SIZE + SIZE) % SIZE; }
+
+void initTable(Entry table[]) {
+    for (int i = 0; i < SIZE; ++i) {
+        table[i].state = EMPTY;
     }
 }
 
-int hashFunction(int key) {
-    return (key % SIZE + SIZE) % SIZE;
-}
+bool insert(Entry table[], int key, int value) {
+    int idx = hashFunction(key);
+    int firstDeleted = -1;
 
-void insert(Node* table[], int key, int value) {
-    int index = hashFunction(key);
-    Node* cur = table[index];
-    while (cur != nullptr) {
-        if (cur->key == key) {
-            cur->value = value;
-            return;
+    for (int step = 0; step < SIZE; ++step) {
+        int i = (idx + step) % SIZE;
+
+        if (table[i].state == OCCUPIED) {
+            if (table[i].key == key) {            // update jika key sama
+                table[i].value = value;
+                return true;
+            }
+        } else if (table[i].state == DELETED) {
+            if (firstDeleted == -1) firstDeleted = i;
+        } else { 
+            if (firstDeleted != -1) i = firstDeleted; 
+            table[i].key = key;
+            table[i].value = value;
+            table[i].state = OCCUPIED;
+            return true;
         }
-        cur = cur->next;
     }
-    Node* baru = new Node;
-    baru->key = key;
-    baru->value = value;
-    baru->next = table[index];
-    table[index] = baru;
+
+    if (firstDeleted != -1) {
+        table[firstDeleted].key = key;
+        table[firstDeleted].value = value;
+        table[firstDeleted].state = OCCUPIED;
+        return true;
+    }
+    return false;
 }
 
-Node* search(Node* table[], int key) {
-    int index = hashFunction(key);
-    Node* cur = table[index];
-    while (cur != nullptr) {
-        if (cur->key == key) {
-            return cur;
+Entry* search(Entry table[], int key) {
+    int idx = hashFunction(key);
+
+    for (int step = 0; step < SIZE; ++step) {
+        int i = (idx + step) % SIZE;
+
+        if (table[i].state == EMPTY) {
+            return nullptr;
         }
-        cur = cur->next;
+        if (table[i].state == OCCUPIED && table[i].key == key) {
+            return &table[i];
+        }
     }
     return nullptr;
 }
 
-void removeKey(Node* table[], int key) {
-    int index = hashFunction(key);
-    Node* cur = table[index];
-    Node* prev = nullptr;
-    while (cur != nullptr) {
-        if (cur->key == key) {
-            if (prev == nullptr) {
-                table[index] = cur->next;
-            } else {
-                prev->next = cur->next;
-            }
-            delete cur;
-            return;
-        }
-        prev = cur;
-        cur = cur->next;
-    }
+bool removeKey(Entry table[], int key) {
+    Entry* e = search(table, key);
+    if (!e) return false;
+    e->state = DELETED;
+    return true;
 }
 
-void display(Node* table[]) {
-    cout << "\nIsi Hash Table:\n";
-    for (int i = 0; i < SIZE; i++) {
+void display(Entry table[]) {
+    cout << "\nIsi Hash Table (Open Addressing, Linear Probing):\n";
+    for (int i = 0; i < SIZE; ++i) {
         cout << i << ": ";
-        Node* tmp = table[i];
-        while (tmp != nullptr) {
-            cout << "(" << tmp->key << "," << tmp->value << ") -> ";
-            tmp = tmp->next;
-        }
-        cout << "NULL\n";
+        if (table[i].state == EMPTY) cout << "EMPTY\n";
+        else if (table[i].state == DELETED) cout << "DELETED\n";
+        else cout << "(" << table[i].key << "," << table[i].value << ")\n";
     }
 }
 
 int main() {
-    Node* table[SIZE];
+    Entry table[SIZE];
     initTable(table);
 
     insert(table, 1, 100);
@@ -91,12 +95,9 @@ int main() {
 
     display(table);
 
-    Node* hasil = search(table, 11);
-    if (hasil != nullptr) {
-        cout << "\nKey 11 ditemukan dengan value = " << hasil->value << endl;
-    } else {
-        cout << "\nKey 11 tidak ditemukan\n";
-    }
+    Entry* hasil = search(table, 11);
+    if (hasil) cout << "\nKey 11 ditemukan, value = " << hasil->value << "\n";
+    else       cout << "\nKey 11 tidak ditemukan\n";
 
     removeKey(table, 11);
     cout << "\nSetelah menghapus key 11:\n";
