@@ -103,18 +103,18 @@ python --version
 Buka terminal dan jalankan perintah berikut:
 
 ```bash
-git clone https://github.com/labkom/praktikum-strukdat-2026.git
+git clone https://github.com/Praktikum-LabKom-TI-Unila/Praktikum-Struktur-Data.git
 ```
 
 Atau jika menggunakan SSH:
 ```bash
-git clone git@github.com:labkom/praktikum-strukdat-2026.git
+git clone git@github.com:Praktikum-LabKom-TI-Unila/Praktikum-Struktur-Data.git
 ```
 
 ### Langkah 2: Masuk ke Direktori
 
 ```bash
-cd praktikum-strukdat-2026
+cd Praktikum-Struktur-Data
 ```
 
 ### Langkah 3: Jalankan File Python
