@@ -26,18 +26,20 @@ def main():
     arr = []
     print("Masukkan elemen (urut menaik):")
     for i in range(n):
-        try:
-            nilai = int(input())
-            arr.append(nilai)
-        except ValueError:
-            print("Input tidak valid, menggunakan 0")
-            arr.append(0)
+        while True:
+            try:
+                nilai = int(input())
+                arr.append(nilai)
+                break
+            except ValueError:
+                print("Input tidak valid, silakan masukkan angka!")
     print(f"Array: {arr}")
-    try:
-        target = int(input("Masukkan angka yang ingin dicari: "))
-    except ValueError:
-        print("Input tidak valid!")
-        return
+    while True:
+        try:
+            target = int(input("Masukkan angka yang ingin dicari: "))
+            break
+        except ValueError:
+            print("Input tidak valid, silakan masukkan angka!")
     pos = binary_search(arr, n, target)
     if pos != -1:
         print(f"Ditemukan pada indeks ke-{pos}")

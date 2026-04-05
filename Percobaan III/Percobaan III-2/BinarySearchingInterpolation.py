@@ -23,11 +23,12 @@ def main():
     data = [5, 12, 19, 23, 31, 37, 45, 52, 68, 74, 89, 95]
     n = len(data)
     print(f"Data array: {data}")
-    try:
-        target = int(input("Masukkan nilai yang ingin dicari: "))
-    except ValueError:
-        print("Input tidak valid!")
-        return
+    while True:
+        try:
+            target = int(input("Masukkan nilai yang ingin dicari: "))
+            break
+        except ValueError:
+            print("Input tidak valid, silakan masukkan angka!")
     pos = interpolation_search(data, n, target)
     if pos != -1:
         print(f"Ketemu pada indeks ke-{pos}")

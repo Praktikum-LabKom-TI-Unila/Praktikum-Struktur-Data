@@ -14,11 +14,12 @@ def main():
     data = [3, 8, 1, 9, 0, 6, 7, 5, 12, 2]
     n = len(data)
     print(f"Data array: {data}")
-    try:
-        target = int(input("Masukkan angka yang ingin dicari: "))
-    except ValueError:
-        print("Input tidak valid!")
-        return
+    while True:
+        try:
+            target = int(input("Masukkan angka yang ingin dicari: "))
+            break
+        except ValueError:
+            print("Input tidak valid, silakan masukkan angka!")
     found, index = sequential_search_sentinel(data, n, target)
     if found:
         print(f"Ditemukan pada indeks ke-{index}")

@@ -12,11 +12,12 @@ def main():
     data = [3, 8, 1, 9, 0, 6, 7, 5, 2, 2, 1, 6, 2, 5, 12]
     n = len(data)
     print(f"Data array: {data}")
-    try:
-        target = int(input("Masukkan angka yang ingin dicari: "))
-    except ValueError:
-        print("Input tidak valid!")
-        return
+    while True:
+        try:
+            target = int(input("Masukkan angka yang ingin dicari: "))
+            break
+        except ValueError:
+            print("Input tidak valid, silakan masukkan angka!")
     counter = sequential_search(data, n, target)
     if counter > 0:
         print(f"Angka {target} ditemukan sebanyak {counter} kali.")

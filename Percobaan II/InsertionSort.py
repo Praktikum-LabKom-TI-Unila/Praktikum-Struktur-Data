@@ -17,12 +17,13 @@ def main():
     arr = []
     print("Masukkan elemen array:")
     for i in range(n):
-        try:
-            nilai = int(input())
-            arr.append(nilai)
-        except ValueError:
-            print("Input tidak valid, menggunakan 0")
-            arr.append(0)
+        while True:
+            try:
+                nilai = int(input())
+                arr.append(nilai)
+                break
+            except ValueError:
+                print("Input tidak valid, silakan masukkan angka!")
     print(f"Array sebelum diurutkan: {arr}")
     insertion_sort(arr, n)
     print("Array setelah diurutkan (Insertion Sort):", end=" ")

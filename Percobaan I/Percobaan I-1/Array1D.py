@@ -23,11 +23,12 @@ def main():
         elif choice == 3:
             print("Masukkan 5 nilai:")
             for i in range(5):
-                try:
-                    a[i] = int(input(f"a[{i}] = "))
-                except ValueError:
-                    print("Masukkan angka yang valid!")
-                    a[i] = 0
+                while True:
+                    try:
+                        a[i] = int(input(f"a[{i}] = "))
+                        break
+                    except ValueError:
+                        print("Input tidak valid, silakan masukkan angka!")
             print(f"Array sekarang: {a}")
         elif choice == 4:
             running = False

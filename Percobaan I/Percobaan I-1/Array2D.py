@@ -25,11 +25,12 @@ def main():
             print("Masukkan nilai untuk array 3x2:")
             for i in range(3):
                 for j in range(2):
-                    try:
-                        b[i][j] = int(input(f"b[{i}][{j}] = "))
-                    except ValueError:
-                        print("Masukkan angka yang valid!")
-                        b[i][j] = 0
+                    while True:
+                        try:
+                            b[i][j] = int(input(f"b[{i}][{j}] = "))
+                            break
+                        except ValueError:
+                            print("Input tidak valid, silakan masukkan angka!")
             print("Array sekarang:")
             for row in b:
                 print(row)
